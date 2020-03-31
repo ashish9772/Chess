@@ -1,0 +1,107 @@
+
+
+<DOCTYPE html>
+<html>
+<head>
+<style>
+
+div
+{
+border:1px solid black;
+width:20px;
+height:20px;
+}
+.white{
+height:40px;
+width:40px;
+background:#eee;
+}
+.black{
+height:40px;
+width:40px;
+background:#000;
+}
+.red {
+	background-color: red;
+}
+</style>
+</head>
+<body >
+<script>
+var table;
+function createTable(){
+table = document.createElement("table");
+for (var i = 0; i < 8; i++) {
+    var tr = document.createElement('tr');
+    for (var j = 0; j < 8; j++) {
+        var td = document.createElement('td');
+        if (i%2 == j%2) {
+            td.className = "white" + ' ' + i+j ;
+        } else {
+            td.className = "black" + ' ' + i+j ;
+        }
+		td.textContent = `${i}, ${j}`;
+        tr.appendChild(td);
+    }
+    table.appendChild(tr);
+}
+document.body.appendChild(table);
+
+}
+createTable();
+<!-- function abc (x){ -->
+<!-- debugger -->
+<!-- console.log(x) -->
+<!-- } -->
+var d = [];
+function popMessage(e) {
+	d = resetColors(d);
+	if (!e) e = event;
+	
+	let currentCell = e.target.closest('td');
+	let x = currentCell.parentNode.rowIndex;
+	let y = currentCell.cellIndex;
+	table.rows[x].cells[y].classList.add('red');
+	d.push([x, y]);
+
+	for (let id = 1, row, cell; id < 8; id++) {
+		if ((x + id) < 8 && (y + id) < 8) {
+			row = (x + id);
+			cell = (y + id);
+			table.rows[row].cells[cell].classList.add('red');
+			d.push( [row, cell] )
+		}
+		if ((x + id) < 8 && (y - id) > -1) {
+			row = (x + id);
+			cell = (y - id);
+			table.rows[row].cells[cell].classList.add('red');
+			d.push( [row, cell] )
+		}
+		if ((x - id) > -1 && (y + id) < 8) {
+			row = (x - id);
+			cell = (y + id);
+			table.rows[row].cells[cell].classList.add('red');
+			d.push( [row, cell] )
+		}
+		
+		if ((x - id) > -1 && (y - id) > -1) {
+			row = (x - id);
+			cell = (y - id);
+			table.rows[row].cells[cell].classList.add('red');
+			d.push( [row, cell] )
+		}
+	}
+}
+
+function resetColors(arr) {
+	for (let ix = 0, len = arr.length; ix < len; ix++) {
+		table.rows[arr[ix][0]].cells[arr[ix][1]].classList.remove('red');
+	}
+	
+	return [];
+}
+
+        document.onclick = popMessage;
+</script>
+</body>
+</html>
